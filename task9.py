@@ -1,3 +1,4 @@
+import math
 from helper import Helper
 
 
@@ -15,18 +16,29 @@ class Task9:
     def start_task(self):
         helper = Helper()
         print(f'------------------------- Задача {self.task_number} -------------------------')
-        print('Определить знак заданного целого числа. Ответом должно быть «+», «-», «0». Использовать оператор case')
-        x = helper.set_real_number('x')
+        print('Дано натуральное n. Вычиcлить Пi=1 (2 + 1/i!)')
+        n = helper.set_natural_number('n')
         print('----------------------------------------------------------')
-        print(f'Знак заданного числа: {self.__get_sign(x)}')
+        self.__print_formula(n)
+        print(f' = {self.__calculate(n)}')
         print('----------------------------------------------------------')
         self.task_ended_callback(self.task_number)
 
     @staticmethod
-    def __get_sign(x: float) -> str:
-        if x > 0:
-            return '"+"'
-        elif x < 0:
-            return '"-"'
-        else:
-            return '"0"'
+    def __print_formula(n: int):
+        count = 1
+        while count <= n:
+            print(f'(2 + 1/{count}!)', end='')
+            count += 1
+            if count <= n:
+                print(' * ', end='')
+
+    @staticmethod
+    def __calculate(n: int) -> float:
+        value = 1
+        count = 1
+        while count <= n:
+            value *= 2 + (1 / math.factorial(count))
+            count += 1
+
+        return round(value, 2)

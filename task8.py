@@ -16,25 +16,30 @@ class Task8:
     def start_task(self):
         helper = Helper()
         print(f'------------------------- Задача {self.task_number} -------------------------')
-        print('Из величин, определяемых выражениями a=sinx, b=cosx, c=ln|x| при заданном х,'
-              '\nопределить и вывести на экран дисплея минимальное значение')
-        x = helper.set_real_number('x')
-        a = round(math.sin(x), 4)
-        b = round(math.cos(x), 4)
-        c = round(math.log(abs(x), math.e), 4)
+        print('Дано действительное число x, натуральное n. Вычислить: x^1/1! + ... + x^n/n!')
+        x = helper.set_real_number('x', False)
+        n = helper.set_natural_number('n')
         print('----------------------------------------------------------')
-        self.__check_min(a, b, c, x)
+        self.__print_formula(x, n)
+        print(f' = {self.__calculate(x, n)}')
         print('----------------------------------------------------------')
         self.task_ended_callback(self.task_number)
 
     @staticmethod
-    def __check_min(a: float, b: float, c: float, x: float):
-        min_value = min([a, b, c])
+    def __print_formula(x: float, n: int):
+        count = 1
+        while count <= n:
+            print(f'({x}^{count}/{count}!)', end='')
+            count += 1
+            if count <= n:
+                print(' + ', end='')
 
-        if a == min_value:
-            print(f'Минимальное значение: a = sin({x}) = {a}')
-        elif b == min_value:
-            print(f'Минимальное значение: b = cos({x}) = {b}')
-        else:
-            print(f'Минимальное значение: c = ln(|{x}|) = {c}')
+    @staticmethod
+    def __calculate(x: float, n: int) -> float:
+        value = 0
+        count = 1
+        while count <= n:
+            value += math.pow(x, count)/math.factorial(count)
+            count += 1
 
+        return round(value, 2)

@@ -1,5 +1,4 @@
-import math
-from helper import Helper, Point
+from helper import Helper
 
 
 class Task14:
@@ -16,20 +15,27 @@ class Task14:
     def start_task(self):
         helper = Helper()
         print(f'------------------------- Задача {self.task_number} -------------------------')
-        print('Определить, попадает ли точка M(x,y) в круг радиусом r с центром в точке (x0,y0). ')
-        r = helper.set_real_number('Радиус круга', True, 0)
-        x = helper.set_real_number('x')
-        y = helper.set_real_number('y')
-        m = Point(x, y)
+        print('Вычислить приближенно значение бесконечной суммы:'
+              '\n1/1*3 + 1/2*4 + 1/3*5 + ... = 3/4')
+        epc = helper.set_degree_of_accuracy('Введите степень точности')
         print('----------------------------------------------------------')
-        print(f'{self.__is_point_inside(m, r)}')
+        self.__calculate(epc, helper)
         print('----------------------------------------------------------')
         self.task_ended_callback(self.task_number)
 
     @staticmethod
-    def __is_point_inside(m: Point, r: float) -> str:
-        hyp = math.sqrt(m.x ** 2 + m.y ** 2)
-        if r >= hyp:
-            return f'Точка принадлежит кругу'
-        else:
-            return f'Точка не принадлежит кругу'
+    def __calculate(epc: float, helper: Helper):
+        exact_value = 3 / 4
+        epc_str = helper.float_to_str(epc)
+        count_symbols = len(epc_str.split(".")[1])
+        n1 = 1
+        n2 = 3
+        total_sum = 0.0
+        while True:
+            a = 1 / (n1 * n2)
+            if abs(a) < epc:
+                break
+            total_sum += a
+            n1 += 1
+            n2 += 1
+        helper.show_degree_of_accuracy_result(exact_value, round(total_sum, count_symbols), epc_str)

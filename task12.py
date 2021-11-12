@@ -15,43 +15,30 @@ class Task12:
     def start_task(self):
         helper = Helper()
         print(f'------------------------- Задача {self.task_number} -------------------------')
-        print('В японском календаре принят двенадцатилетний цикл. Годы внутри цикла носят названия животных: крысы,'
-              '\nкоровы, тигра, зайца, дракона, змеи, лошади, овцы, обезьяны, петуха, собаки, свиньи. Написать'
-              '\nпрограмму, которая позволяет ввести номер года нашей эры и выводит его название по'
-              '\nяпонскому календарю. (1996 г. – начало очередного цикла). Использовать оператор case')
-        year = helper.set_natural_number('Введите год')
+        print('На промежутке от 1 до M найти все числа Армстронга. Натуральное число из n цифр называется'
+              '\nчислом Армстронга, если сумма его цифр, возведенных в n-ю степень, равна самому числу')
+        m = helper.set_natural_number('M')
         print('----------------------------------------------------------')
-        print(f'Название {year} г. по японскому календарю: {self.__get_year_name(year)}')
+        number_list = self.__get_armstrong_numbers(m)
+        self.__print_numbers(number_list, m)
         print('----------------------------------------------------------')
         self.task_ended_callback(self.task_number)
 
     @staticmethod
-    def __get_year_name(year: int) -> str:
-        start = 1996
-        x_year = ((year - start) % 12) + 1
-        if x_year == 1:
-            return 'Крыса'
-        elif x_year == 2:
-            return 'Корова'
-        elif x_year == 3:
-            return 'Тигр'
-        elif x_year == 4:
-            return 'Заяц'
-        elif x_year == 5:
-            return 'Дракон'
-        elif x_year == 6:
-            return 'Змея'
-        elif x_year == 7:
-            return 'Лошадь'
-        elif x_year == 8:
-            return 'Овца'
-        elif x_year == 9:
-            return 'Обезьяна'
-        elif x_year == 10:
-            return 'Петух'
-        elif x_year == 11:
-            return 'Собака'
-        elif x_year == 12:
-            return 'Свинья'
-        else:
-            return 'Ошибка'
+    def __print_numbers(number_list: list[int], m: int):
+        if len(number_list) > 0:
+            print(f'Числа Армстронга в диапозоне [1, {m}]:'
+                  f'\n{number_list}')
+
+    @staticmethod
+    def __get_armstrong_numbers(m: int) -> list[int]:
+        number_list = []
+        for number in range(1, m + 1, 1):
+            checked_sum = sum(
+                map(
+                    lambda x: int(x) ** len(str(number)), str(number)
+                )
+            )
+            if checked_sum == number:
+                number_list.append(number)
+        return number_list

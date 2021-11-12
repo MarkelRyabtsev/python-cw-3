@@ -15,23 +15,30 @@ class Task5:
     def start_task(self):
         helper = Helper()
         print(f'------------------------- Задача {self.task_number} -------------------------')
-        print('Даны действительные положительные числа x, y, z. Выяснить, существует ли треугольник с длинами '
-              '\nсторон x, y, z (треугольник существует, если длина каждой стороны меньше суммы двух  других сторон)')
-        x = helper.set_real_number('x', True, 0.0)
-        y = helper.set_real_number('y', True, 0.0)
-        z = helper.set_real_number('z', True, 0.0)
+        print('Дано действительное число x, натуральное n. Вычислить: x ( x - n )( x - 2 n )( x - 3 n )…( x - n2 )')
+        x = helper.set_real_number('x')
+        n = helper.set_natural_number('n')
         print('----------------------------------------------------------')
-        print(f'Треугольник со сторанами:'
-              f'\n x = {x}'
-              f'\n y = {y}'
-              f'\n z = {z}')
-        print(self.__is_exist(x, y, z))
+        self.__print_formula(x, n)
+        print(f' = {self.__calculate(x, n)}')
         print('----------------------------------------------------------')
         self.task_ended_callback(self.task_number)
 
     @staticmethod
-    def __is_exist(x: float, y: float, z: float) -> str:
-        if x < y + z and y < x + z and z < x + y:
-            return 'Существует'
-        else:
-            return 'Не существует'
+    def __print_formula(x: float, n: int):
+        count = 0
+        while count <= n:
+            print(f'({x} - {count} * {n})', end='')
+            count += 1
+            if count <= n:
+                print(' * ', end='')
+
+    @staticmethod
+    def __calculate(x: float, n: int) -> float:
+        value = 1
+        count = 0
+        while count <= n:
+            value *= x - (count * n)
+            count += 1
+
+        return round(value, 2)

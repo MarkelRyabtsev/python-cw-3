@@ -1,5 +1,5 @@
 import math
-from helper import Helper
+from helper import Helper, Range
 
 
 class Task10:
@@ -16,33 +16,41 @@ class Task10:
     def start_task(self):
         helper = Helper()
         print(f'------------------------- Задача {self.task_number} -------------------------')
-        print('Вычислить значение функции Y для заданного пользователем значения X')
-        x = helper.set_real_number('x')
-        a = self.__get_a(x)
-        b = self.__get_b(x)
-        y = self.__get_y(a, b)
+        print('Вычислить t = (b^2 + √|q|)/(cos^2(x) + b*ln(y)) Параметр x изменяется от х=хн=1 до х=хк=5'
+              '\nс шагом h=1. b, q, y – константы. Использовать цикл while или repeat')
+        b = helper.set_real_number('b')
+        q = helper.set_real_number('q')
+        y = helper.set_real_number('y')
+        x_start = 1
+        x_stop = 5
+        x_step = 1
+        x_range = Range(
+            x_start,
+            x_stop,
+            x_step
+        )
         print('----------------------------------------------------------')
-        print(f'a = (1 / ({x} + 5)) - (1 / ({x} - 9)) = {a}')
-        b_formula = f'cos({x})' if x >= 0 else f'sin({x})'
-        print(f'b = {b_formula} = {b}')
-        print(f'y = √({a} + {b}) = {y}')
+        values = self.__get_dict_values(x_range, b, q, y)
+        for value in values:
+            print(f'При x = {value}: t = {values[value]}')
         print('----------------------------------------------------------')
         self.task_ended_callback(self.task_number)
 
-    @staticmethod
-    def __get_a(x: float) -> float:
-        return round((1 / (x + 5)) - (1 / (x - 9)), 2)
-
-    @staticmethod
-    def __get_b(x: float) -> float:
-        if x >= 0:
-            return round(math.cos(x), 4)
-        else:
-            return round(math.sin(x), 4)
-
-    @staticmethod
-    def __get_y(a: float, b: float) -> float:
+    def __get_dict_values(self, x_range: Range, b: float, q: float, y: float) -> dict[float, float]:
         try:
-            return round(math.sqrt(a + b), 2)
+            dict_values = dict()
+            x = x_range.start
+            while x <= x_range.stop:
+                dict_values[round(x, 1)] = self.__get_w(x, b, q, y)
+                x += x_range.step
+            return dict_values
         except:
-            print('Ошибка!')
+            print('Ошибка входных данных')
+            return dict()
+
+    @staticmethod
+    def __get_w(x: float, b: float, q: float, y: float) -> float:
+        try:
+            return round((b ** 2 + math.sqrt(abs(q))) / (math.cos(x) ** 2 + b * math.log(y, math.e)), 4)
+        except:
+            raise Exception

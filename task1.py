@@ -1,5 +1,4 @@
 import math
-
 from helper import Helper, Range
 
 
@@ -38,13 +37,20 @@ class Task1:
         self.task_ended_callback(self.task_number)
 
     def __get_dict_values(self, y_range: Range, a: float, x: float, t: float) -> dict[float, float]:
-        dict_values = dict()
-        y = y_range.start
-        while y < y_range.stop:
-            dict_values[round(y, 1)] = self.__get_z(y, a, x, t)
-            y += y_range.step
-        return dict_values
+        try:
+            dict_values = dict()
+            y = y_range.start
+            while y < y_range.stop:
+                dict_values[round(y, 1)] = self.__get_z(y, a, x, t)
+                y += y_range.step
+            return dict_values
+        except:
+            print('Ошибка входных данных')
+            return dict()
 
     @staticmethod
     def __get_z(y: float, a: float, x: float, t: float) -> float:
-        return round((a * pow(x + ((4 / x) * math.log(y, math.e)), 1 / 3)) / abs(pow(t, 3)), 4)
+        try:
+            return round((a * pow(x + ((4 / x) * math.log(y, math.e)), 1 / 3)) / abs(pow(t, 3)), 4)
+        except:
+            raise Exception

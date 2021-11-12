@@ -15,29 +15,40 @@ class Task6:
     def start_task(self):
         helper = Helper()
         print(f'------------------------- Задача {self.task_number} -------------------------')
-        print('Написать программу простейшего калькулятора (сложение, вычитание, умножение, деление).'
-              '\nПредусмотреть невозможность деления на 0. Использовать оператор case.')
-        x = helper.set_real_number('x')
-        y = helper.set_real_number('y')
-        operation = helper.set_math_operation('Операция')
+        print('Дано действительное число x, натуральное n. Вычислить: 1/x + 1/x(x+1) +..+ 1/x(x+1)...(x+n)')
+        x = helper.set_real_number('x', False, 0)
+        n = helper.set_natural_number('n')
         print('----------------------------------------------------------')
-        result = self.__calculate(x, y, operation)
-        print(f'{x} {operation} {y} = {result}')
+        self.__print_formula(x, n)
+        print(f' = {self.__calculate(x, n)}')
         print('----------------------------------------------------------')
         self.task_ended_callback(self.task_number)
 
     @staticmethod
-    def __calculate(x: float, y: float, operation: str) -> str:
-        if operation == '+':
-            return str(x + y)
-        elif operation == '-':
-            return str(x - y)
-        elif operation == '*':
-            return str(x * y)
-        elif operation == '/':
-            if y == 0.0:
-                print('Нельзя делить на 0!')
-                return 'Ошибка!'
-            return str(x / y)
-        else:
-            print('Ошибка!')
+    def __print_formula(x: float, n: int):
+        count = 1
+        formula = f'1/{x} + '
+        while count <= n:
+            denominator = ''
+            for i in range(0, count + 1):
+                denominator += f'({x} + {i})'
+                if n != 0 and i != count:
+                    denominator += ' * '
+            formula += f'1/({denominator})'
+            count += 1
+            if count <= n:
+                formula += ' + '
+        print(formula)
+
+    @staticmethod
+    def __calculate(x: float, n: int) -> float:
+        result = 1 / x
+        count = 1
+        while count <= n:
+            denominator = x
+            for i in range(0, count + 1):
+                denominator *= (x + i)
+            result += 1 / denominator
+            count += 1
+
+        return round(result, 2)

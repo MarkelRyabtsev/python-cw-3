@@ -1,10 +1,3 @@
-class Point:
-
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-
 class Range:
 
     def __init__(self, start: float, stop: float, step: float):
@@ -16,13 +9,24 @@ class Range:
 class Helper:
 
     @staticmethod
-    def set_one_symbol(description: str) -> str:
+    def show_degree_of_accuracy_result(exact_value: float, approximate_value: float, epc: str):
+        print(f'Точное значение = {exact_value}')
+        print(f'Степень точности = {epc}')
+        print(f'Приблеженное значение = {approximate_value}')
+
+    @staticmethod
+    def set_degree_of_accuracy(description: str) -> float:
         while True:
-            value = input(f'{description} : ')
-            if len(value) != 1:
-                print(f'Введите только один символ!')
+            try:
+                value = float(input(f'{description} : '))
+                if 0 < value < 1:
+                    return value
+                else:
+                    print(f'Введенное число должно быть в пределах от 0 до 1')
+                    continue
+            except:
+                print('Введенное число должно быть в пределах от 0 до 1')
                 continue
-            return value
 
     @staticmethod
     def set_real_number(description: str, only_positive: bool = False, not_equal: float = None) -> float:
@@ -58,11 +62,41 @@ class Helper:
                 continue
 
     @staticmethod
-    def set_math_operation(description: str) -> str:
+    def set_sequence(description: str, stop: int, only_positive: bool = False) -> list[int]:
+        print(f'{description} : ', end='')
+        values = []
         while True:
-            value = str(input(f'{description} : '))
-            if value == '+' or value == '-' or value == '*' or value == '/':
-                return value
-            else:
-                print('Введите + - * или /')
+            try:
+                value = int(input(
+                    f'{values} : ' if len(values) > 0
+                    else ""
+                ))
+                if only_positive:
+                    if value < 0:
+                        print(f'Введенное число должно быть больше 0!')
+                        continue
+                if value == stop:
+                    if len(values) == 0:
+                        print(f'Последовательность не содержит значений! Введите значение : ', end='')
+                        continue
+                    else:
+                        return values
+                values.append(value)
+            except:
+                print('Введенное значение не является вещественным числом, повторите!')
                 continue
+
+    @staticmethod
+    def float_to_str(f):
+        float_string = repr(f)
+        if 'e' in float_string:  # detect scientific notation
+            digits, exp = float_string.split('e')
+            digits = digits.replace('.', '').replace('-', '')
+            exp = int(exp)
+            zero_padding = '0' * (abs(int(exp)) - 1)  # minus 1 for decimal point in the sci notation
+            sign = '-' if f < 0 else ''
+            if exp > 0:
+                float_string = '{}{}{}.0'.format(sign, digits, zero_padding)
+            else:
+                float_string = '{}0.{}{}'.format(sign, zero_padding, digits)
+        return float_string
