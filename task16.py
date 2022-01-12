@@ -51,6 +51,6 @@ class Task16:
     @staticmethod
     def __get_z(x: float, a: float, q: float, t: float) -> float:
         try:
-            return round((3 * (x ** 2) - math.sqrt(math.cos(q ** 3))) / (math.log((q + a) * t, math.e)), 4)
+            return round((3 * (x ** 2) - math.sqrt(math.cos(q ** 3))) / (math.log((q + a), math.e)) * t, 4)
         except:
             raise Exception
