@@ -26,7 +26,8 @@ class Task5:
 
     @staticmethod
     def __print_formula(x: float, n: int):
-        count = 0
+        count = 1
+        print(f'{x} * ', end='')
         while count <= n:
             print(f'({x} - {count} * {n})', end='')
             count += 1

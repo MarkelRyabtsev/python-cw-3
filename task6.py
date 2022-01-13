@@ -30,7 +30,7 @@ class Task6:
         formula = f'1/{x} + '
         while count <= n:
             denominator = ''
-            for i in range(0, count + 1):
+            for i in range(1, count + 1):
                 denominator += f'({x} + {i})'
                 if n != 0 and i != count:
                     denominator += ' * '
@@ -46,9 +46,9 @@ class Task6:
         count = 1
         while count <= n:
             denominator = x
-            for i in range(0, count + 1):
+            for i in range(1, count + 1):
                 denominator *= (x + i)
             result += 1 / denominator
             count += 1
 
-        return round(result, 2)
+        return round(result, 4)
